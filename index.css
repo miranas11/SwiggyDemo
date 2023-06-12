@@ -1,3 +1,82 @@
-#heading {
-    color: red;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    background-color: white;
+    border-bottom: 1px solid black;
+    padding: 0 150px;
+}
+
+.logo {
+    width: 150px;
+}
+
+.nav-items > ul {
+    display: flex;
+}
+
+.nav-items > ul > li {
+    list-style: none;
+    padding: 0 30px;
+    font-size: 23px;
+    font-weight: 600;
+}
+.auth-btn {
+    width: 70px;
+    height: 30px;
+}
+
+.body {
+    margin: 0 150px;
+}
+
+.res-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.res-card {
+    width: 350px;
+    height: 350px;
+    border: 1px solid transparent;
+    margin: 50px 20px 0px 20px;
+    padding: 25px;
+}
+
+.res-card:hover {
+    cursor: pointer;
+    border: 1px solid #f0f0f0;
+    box-shadow: -3px -3px 5px rgba(0, 0, 0, 0.1), 3px 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.res-card > h3,
+h4,
+h5 {
+    margin: 10px;
+}
+
+.res-card > h4,
+h5 {
+    color: #535665;
+}
+
+.res-card-items {
+    display: flex;
+    justify-content: space-between;
+}
+
+.res-logo {
+    width: 100%;
+    height: auto;
 }
