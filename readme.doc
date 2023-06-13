@@ -1,0 +1,16 @@
+#componentdidmount is not equivalent to useeffect() .useEffect() does not use componentdidmount behind scene its competely new methods
+
+# componentwillunmount is called when we are leavign page
+    -lots of things we need to clear before leavin page
+    -since react builds spa then functions in one component will remain there even if we change the page so we need to clean up when leaving 
+        the page so we clean up in componentwillunmount
+    -one example is suppose we have setInterval in componentdidmount the setinterval will be called even if we change the page
+
+    e.g componentdidmount(){
+        this.timer=setInterval(()=>{},1000);
+    }
+
+    now in componentwillunmount(){
+        //this stops the timer when we leave this page
+        clearInterval(this.timer);
+    }

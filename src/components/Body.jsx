@@ -1,6 +1,8 @@
 import RestaurantCard from "./RestaurantCard";
 import resList from "../utils/mockData";
 import { useEffect, useState } from "react";
+import Shimer from "./Shimer";
+import { Link } from "react-router-dom";
 
 function filterData(searchText, listOfRestaurants) {
     return listOfRestaurants.filter((res) => {
@@ -26,6 +28,8 @@ const Body = () => {
         setListofRestaurants(jsonData.data.cards[2].data.data.cards);
         setFilteredRestaurants(jsonData.data.cards[2].data.data.cards);
     }
+
+    console.log(listOfRestaurants);
 
     //not render component(Early return);
 
@@ -69,25 +73,29 @@ const Body = () => {
                     Top Rated Restaurants
                 </button>
             </div>
-            <div className="res-container">
-                {
-                    filteredRestaurants.length === 0 ? (
+            {listOfRestaurants.length == 0 ? (
+                <Shimer />
+            ) : (
+                <div className="res-container">
+                    {filteredRestaurants.length === 0 ? (
                         <h1>NO RESTAURANT MATCHES YOUR QUERY</h1>
                     ) : (
                         filteredRestaurants.map((res) => {
                             return (
-                                <RestaurantCard
+                                <Link
+                                    className="link"
                                     key={res.data.id}
-                                    resData={res}
-                                ></RestaurantCard>
+                                    to={"/restaurant/" + res.data.id}
+                                >
+                                    <RestaurantCard
+                                        resData={res}
+                                    ></RestaurantCard>
+                                </Link>
                             );
                         })
-                    )
-                    /* {resList.map((res) => (
-                    <RestaurantCard key={res.data.id} resData={res} />
-                ))} */
-                }
-            </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

@@ -8,6 +8,7 @@ const RestaurantCard = (props) => {
         deliveryTime,
         costForTwoString,
         cloudinaryImageId,
+        id,
     } = props.resData?.data;
     return (
         <div className="res-card">
