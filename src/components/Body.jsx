@@ -1,6 +1,7 @@
 import RestaurantCard from "./RestaurantCard";
 import resList from "../utils/mockData";
 import { useEffect, useState } from "react";
+import useOnline from "../utils/hooks/useOnline";
 import Shimer from "./Shimer";
 import { Link } from "react-router-dom";
 
@@ -29,7 +30,9 @@ const Body = () => {
         setFilteredRestaurants(jsonData.data.cards[2].data.data.cards);
     }
 
-    console.log(listOfRestaurants);
+    const isOnline = useOnline();
+
+    if (!isOnline) return <h1>CHECK YOUR INTERNET CONNECTION</h1>;
 
     //not render component(Early return);
 
@@ -45,14 +48,12 @@ const Body = () => {
                     value={searchText}
                     onChange={(e) => {
                         setSearchText(e.target.value);
-                        console.log(searchText);
                     }}
                 ></input>
                 <button
                     className="search-btn"
                     onClick={() => {
                         const data = filterData(searchText, listOfRestaurants);
-                        console.log(data);
                         setFilteredRestaurants(data);
                     }}
                 >
@@ -66,7 +67,7 @@ const Body = () => {
                         const filteredList = filteredRestaurants.filter(
                             (res) => res.data.avgRating > 4
                         );
-                        console.log(filteredList);
+
                         setFilteredRestaurants(filteredList);
                     }}
                 >

@@ -14,3 +14,164 @@
         //this stops the timer when we leave this page
         clearInterval(this.timer);
     }
+
+
+    #To do the same in useEffect we need to return a fucntion inside setEffect 
+        - this return will be called when we change the component 
+        - this is the unmounting phase in functional components
+
+
+
+
+###############CREATE HOOKS###################
+WHY?
+Functions used why?
+    maintable ->easy to debug
+    modularity  -> broken code into meaningful chunks
+    reusability
+    readibility
+    seperation of concern
+    wrap up a small logic and use it anywhere
+
+hooks kind of does the same
+# unlike componenets hooks doesn return jsx they return js like value,array etc
+
+
+//Chunking / Code Spitting / Dynamic Bundling / Lazy Loading / On Demand Bundling / Dynamic Import
+    -Suppose we have website like mmt 
+    -the bundler when buids the project it converts all the code into one single code
+        -in websites like mmt that will be a big js file and it will make everthing so 
+        -so instead we do chunking to make multiple js files.
+    
+    -Suppose we want to create a instamart component for swiggy we want it to be a different js file when parcel builds it
+    - To do it do a lazy import
+
+    import React, { lazy } from "react";
+
+    const Instamart = lazy(import("./components/Instamart"));
+
+    -now use it in router
+
+    #WHAT HAPPENS NOW?
+        -When you click to open the instamart page react shows error because when to try to access instamart the instamart js file has not been loaded yet and reacts tries to render even before it has loaded.
+        -so you go back home and next time you click instamart it loads .WHY? beacuse react has already loaded it in first try and stored in cache
+
+    #TO PREVENT THIS.
+        -Use Suspense component provided by and react and wrap it aroudn you instamart component in router
+        -We dont know it will be loaded or not show use Suspennse.
+        -React knows these components are lazy loading so react takes care of it
+        -lazy loading is a promise
+        -so now using suspense react waits for it to resolve
+             {
+                path: "/instamart",
+                element: (
+                    <Suspense>
+                        <Instamart />
+                    </Suspense>
+                ),
+            },
+
+            //Do this and react will show shimer for the time instamart lazy loads
+             <Suspense fallback={<Shimer />}>
+
+
+#Taliwind CSS
+     -CSS on the go(in same file like inline CSS)
+     -reusability
+     -less bundle size
+     -Flexible UI(Customzations)
+     -GOOD DOCS
+
+
+
+
+#PROPS DRILLING
+    -sending data in props down n chain from one component to another
+        -from parent to children and their childeren and so on
+
+    #PROLEM
+        -unnecessay code and variables we dont need
+        -some componenets wont even need these props and they are still receiving them and sending to other componenets
+        -we no a component also re-renders when we change the prop so suppose props drilling is in 5-10 componenets and change in prop in top component will result it in re rendering all those 5-10 componenetss
+
+
+#LIFTING THE STATE up
+    -suppose you have a parent component and child 
+    -normally the child can have control to its parents state if you pass the parents state as props to its children-
+    -but you can also pass the child state to its parent
+    -suppose there is a section component that is inside a home componenet and you want to hide the section componenet by clicking on a button
+    -normally u would create a state in section isVisivle
+    -but you can also create a state in body isvisible in body and pass that as props to section
+
+
+#Suppose we have some data that we need to pass to all componenets 
+    -one way to do this would be props drilling but that is not good way
+    -so instead create a central spaace for this kind of data 
+        -u can use local storage but updating and using the local storage is costly operation
+    -that central space is called context
+        -we use it for data we need all along the app
+        -you can create a global variable but it wont be tracked by react and wont do reconsilation algo on it
+        -context is like useState for whole react app
+        -you can create a context for dark theme as well
+
+        #TO CREATE context -----------
+                                    import { createContext } from "react";
+                                    const UserContext = createContext({
+                                        user:{
+                                            name: "anas",
+                                            emai: "anas@gmail.com",
+                                        }
+                                        
+                                    });
+
+                                    export default UserContext;
+
+        #TO USE IN A componenet--------------
+
+                                    import { useState, useContext } from "react";
+                                    import UserContext from "../utils/contexts/userContext";
+                                    
+                                    const Header = () => {
+                                        const {user} = useContext(UserContext);
+                                        //now use user.name anywhere in componenet
+
+
+        #To use it in a class based component-------------
+                                                                        
+                                    const MyComponent = () => {
+                                    return (
+                                        <UserContext.Consumer>
+                                        {user => (
+                                            <div>          
+                                            <p>{user.name}</p>
+                                            </div>
+                                        )}
+                                        </UserContext.Consumer>
+                                    );
+                                    };
+
+        #To use in all components from root of app-------------
+
+                                    const AppLayout = () => {
+                                        const [user, setUser] = useState({
+                                            name: "anas",
+                                            email: "anas@gmail.com",
+                                        });
+                                        return (
+                                            <UserContext.Provider
+                                                value={{
+                                                    user: user,
+                                                    //use this to change state anywhere and the diff algo will trigger everythere using this context
+                                                    setUser:setUser
+                                                }}
+                                            >
+                                                <div className="app">
+                                                    <Header />
+                                                    {/* Outlet will be filled by childeren of AppLayout */}
+                                                    <Outlet />
+                                                </div>
+                                            </UserContext.Provider>
+                                        );
+                                    };
+
+

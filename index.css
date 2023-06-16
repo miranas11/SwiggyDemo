@@ -32,6 +32,9 @@ body {
     font-size: 23px;
     font-weight: 600;
 }
+.nav-items > ul > li :hover {
+    color: orange;
+}
 .auth-btn {
     width: 70px;
     height: 30px;
@@ -89,7 +92,22 @@ h5 {
     height: auto;
 }
 
-.link {
+a {
     text-decoration: none;
     color: inherit;
+}
+
+.res-menu {
+    margin: 30px 30px;
+    display: flex;
+}
+
+.menu {
+    margin-left: 50px;
+}
+
+.items {
+    margin: 10px;
+    font-size: 30px;
+    font-weight: 500;
 }

@@ -1,0 +1,55 @@
+#need redux to manage data layer
+#need for large application where there is lots of data
+#we used redux
+
+
+
+The createcart returns a objects which contains reducer (not reducers) and actions
+            cartSlice={
+                actions:{addItem,EmptyCart},
+                reducer:
+            }
+
+
+    so you need to export like
+    export const{addItem,EmptyCart} = cartSlice.actions;
+    export default cartSlice.reducer;
+
+
+now import cartSlice in store
+
+    const store = configureStore({
+    reducer: {
+        cart:cartSlice,
+        },
+    });
+
+#now subscribe to store
+in for eg header component
+//subscribing to store and in store to cart items
+    const cartItems = useSelector((store) => store.cart.items);
+
+and you can access these in header using e.g cartitems.length or cartitems[0]
+
+
+now to access any of the reducer suppose to addItem
+
+import { useDispatch } from "react-redux";
+import { addItem } from "../utils/cartSlice";
+
+//This is how you dispatch an action // use handlAddItems in a button
+ const dispatch = useDispatch();
+    const handleAddItems = () => {
+        dispatch(addItem("carrot"));
+    };
+
+
+
+#Always subscribe to the slice you need and not the whole store because
+    -when u subscribr to the whole store if a small thing changes the whole store has to re render
+    -but if you subscribe to only the specific item it will re render only that slice
+
+    const cartItems=useSelector((store)=>store.cart.items)  --->This is the correct way
+    const store=useSelector((store)=>store)----->Wrng way
+
+
